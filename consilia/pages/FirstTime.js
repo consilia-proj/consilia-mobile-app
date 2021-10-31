@@ -1,21 +1,34 @@
-import React from 'react';
+import React, {useState, useContext} from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, Image } from 'react-native';
 import ProfileCorner from '../components/ProfileCorner';
+import { UserInfoContext } from '../UserInfo';
 
 export default function FirstTime(props) {
-  
+  const userInfo = useContext(UserInfoContext)
+  const [first, setFirst] = useState(userInfo && userInfo.first ? userInfo.first : "")
+  const [last, setLast] = useState(userInfo && userInfo.last ? userInfo.last : "")
+
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Consilia</Text>
-      <TextInput style={styles.nameInput}></TextInput>
+      <TextInput 
+        style={styles.nameInput}
+        onChangeText={text => setFirst(text)}
+        value={first}
+      />
       <Text style={styles.nameTxt}>First</Text>
-      <TextInput style={styles.nameInput}></TextInput>
+      <TextInput 
+        style={styles.nameInput}
+        onChangeText={text => setLast(text)}
+        value={last}
+      />
       <Text style={styles.nameTxt}>Last</Text>
       <TouchableOpacity styles={styles.pfpButton}>
         <Image style={styles.pfp} source={require("../assets/images/placeholder.jpg")}></Image>
       </TouchableOpacity>
       <Text style={styles.nameTxt}>Profile Picture (optional)</Text>
-      <TouchableOpacity onPress={props.onSubmit} style={styles.continueButton}>
+      <TouchableOpacity onPress={() => props.onSubmit(first, last)} style={styles.continueButton}>
         <Text style={{fontSize: 15}}>Continue</Text>
       </TouchableOpacity>
     </View>

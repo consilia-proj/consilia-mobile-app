@@ -1,15 +1,27 @@
-import React from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, Touchable } from 'react-native';
 import ProfileCorner from '../components/ProfileCorner';
+import { UserInfoContext } from '../UserInfo';
 
 export default function HomePage(props) {
+  const userInfo = useContext(UserInfoContext)
+  
+  /*seEffect(() => {
+    setUserInfo(props.userInfo)
+    //console.log("HomePage props " + props.userInfo)
+    //console.log("HomePage " + userInfo)
+    //console.log(userInfo)
+  }, [props.userInfo])*/
+  
   return (
     <View style={styles.container}>
       <ProfileCorner 
-        first={props.first} last={props.last} src={props.src}
+        context={props.context}
+        userInfo={userInfo}
+        src={props.src}
         onPress={props.editProfile}
       />
-      <Text style={styles.title}>Consilia</Text>
+      <Text style={styles.title} onPress={props.touchTitle}>Consilia</Text>
       <TouchableOpacity style={styles.createEvent} onPress={props.createEvent}>
         <Text style={{fontSize: 18}}>Create Event</Text>
       </TouchableOpacity>

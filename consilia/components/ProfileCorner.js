@@ -1,11 +1,14 @@
-import React from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
+
 export default function ProfileCorner(props) {
+  
+  
   return (
     <TouchableOpacity onPress={props.onPress} style={styles.option}>
       <Image style={styles.pfp} source={props.src ? props.src : require('../assets/images/placeholder.jpg')}></Image>
-      <Text style={styles.nameTxt}>{props.first} {props.last}</Text>
+      {props.userInfo && <Text style={styles.nameTxt}>{props.userInfo.first} {props.userInfo.last}</Text>}
     </TouchableOpacity>
   )
 }

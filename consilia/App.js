@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext, createContext} from 'react';
 import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, View } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import CategorySelector from './pages/CategorySelector';
@@ -10,24 +10,27 @@ import PlaceVotes from './pages/PlaceVotes'
 import FirstTime from './pages/FirstTime';
 import Results from './pages/Results';
 
+import { UserInfoContext } from './UserInfo';
+
 export default function App() {
   function fetchNewUrl() {
-
   }
 
   function fetchUserInfo() {
     setUserInfo({first: "Ben", last: "Gordon", pfp: null}) 
   }
   
-  const firstTime = <FirstTime onSubmit={() => {
-    setPage(home)
-  }}/>
+  const firstTime = <FirstTime 
+    userInfo={userInfo}
+    onSubmit={(first, last) => {
+      setUserInfo({first: first, last: last, pfp: null})
+      setPage(home)
+    }
+  }/>
   const home = <HomePage 
     userInfo={userInfo}
     createEvent={() => setPage(newGroup)} 
     goToLink={() => setPage(pickTransport)}
-    first={userInfo && userInfo.first ? userInfo.first : "First"}
-    last={userInfo && userInfo.last ? userInfo.last : "Last"}
     editProfile={() => setPage(firstTime)}
   />
 
@@ -56,19 +59,18 @@ export default function App() {
 
   //const third = <EventPage link="consilia.io/ACL" title="Austin City Limits" distance="3 miles" rating="4"/>
   const [page, setPage] = useState(firstTime);
-  const [userInfo, setUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState(/*{first: "Ben", last: "Gordon", pfp: null}*/null);
   
   useEffect(() => {
-    fetchUserInfo();
-    console.log(userInfo)
     userInfo && userInfo.first && userInfo.last && setPage(home);
   }, [])
-
 
   return (
     <SafeAreaView style={{flex: 1}}>
       <StatusBar/>
-      {page}
+      <UserInfoContext.Provider value={userInfo}>
+        {page}
+      </UserInfoContext.Provider>
     </SafeAreaView>
   );
 };
