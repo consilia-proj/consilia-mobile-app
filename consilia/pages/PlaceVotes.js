@@ -7,6 +7,7 @@ import PlaceData from '../components/PlaceData';
 import { tsConstructorType } from '@babel/types';
 import TinderCard from 'react-tinder-card'
 import { GroupInfoContext } from '../contexts/GroupInfo';
+import { UserInfoContext } from '../contexts/UserInfo';
 
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -45,6 +46,8 @@ function PlaceVotes(props) {
     const [places, setPlaces] = useState(data)
     const [lastDirection, setLastDirection] = useState()
     const groupInfo = useContext(GroupInfoContext)
+    const userInfo = useContext(UserInfoContext)
+
 
     const childRefs = useMemo(() => Array(data.length).fill(0).map(i => React.createRef()), [])
 
@@ -59,6 +62,20 @@ function PlaceVotes(props) {
 
     const swiped = (direction, nameToDelete) => {
 
+      console.log('removing: ' + nameToDelete + ' to the ' + direction)
+      setLastDirection(direction)
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          voteType: direction == "right" ? 1 : 0
+        })
+      };
+      console.log(userInfo)
+      fetch(`http://35.239.35.148/Event/${groupInfo.eventID}/${nameToDelete}/vote/${userInfo.uuid}/aaaaaa`, requestOptions)
+        .then(response => response.json())
+        .then(data => {console.log(data)});
+      alreadyRemoved.push(nameToDelete)
         console.log('removing: ' + nameToDelete + ' to the ' + direction)
         setLastDirection(direction)
         alreadyRemoved.push(nameToDelete)
