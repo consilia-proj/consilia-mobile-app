@@ -83,9 +83,10 @@ export default function App() {
       setPage(home)
       setGroupInfo({...location})
     }}
-    finalScreen={() => {
-      setPage(results)
-    }}
+
+    goToResults={
+      () => setPage(results)
+    }
   />
 
   const results = <Results/>
