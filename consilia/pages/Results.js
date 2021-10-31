@@ -42,7 +42,10 @@ function load()
       </ScrollView>
       <TouchableOpacity style={{margin: 5}} onPress={(e) => {load();}}>
         <Text>Reload</Text>
-      </TouchableOpacity>  
+      </TouchableOpacity> 
+      <TouchableOpacity style={styles.goHome} onPress={props.goHome}>
+        <Text>Go Home</Text>
+      </TouchableOpacity>   
     </View>
   )
 }

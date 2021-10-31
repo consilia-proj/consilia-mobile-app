@@ -89,7 +89,7 @@ export default function App() {
     }
   />
 
-  const results = <Results/>
+  const results = <Results goHome={() => setPage(home)}/>
 
   //const third = <EventPage link="consilia.io/ACL" title="Austin City Limits" distance="3 miles" rating="4"/>
   const [page, setPage] = useState(welcome);
