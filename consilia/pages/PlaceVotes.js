@@ -58,9 +58,13 @@ function PlaceVotes(props) {
     }, [])
 
     const swiped = (direction, nameToDelete) => {
+
         console.log('removing: ' + nameToDelete + ' to the ' + direction)
         setLastDirection(direction)
         alreadyRemoved.push(nameToDelete)
+        if(i == data.length - 1) {
+          props.finalScreen();
+        }
     }
 
     
@@ -91,6 +95,7 @@ function PlaceVotes(props) {
       </TouchableOpacity> 
       
       <CardContainer>
+
         {places.map((item, index) =>
           <TinderCard ref={childRefs[index]} key={item.placeID} onSwipe={(dir) => swiped(dir, item.placeID)} onCardLeftScreen={() => outOfFrame(item.placeID)}>
             <Card>
