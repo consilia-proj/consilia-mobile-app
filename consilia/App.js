@@ -54,10 +54,16 @@ export default function App() {
 
   const pickTransport = <Transport 
     onSubmit={() => setPage(voteOnPlaces)}
-    goHome={() => setPage(home)}
+    goHome={() => {
+      setPage(home)
+      setGroupInfo(null)
+    }}
   />
   const voteOnPlaces = <PlaceVotes
-    goHome={() => setPage(home)}
+    goHome={() => {
+      setPage(home)
+      setGroupInfo(null)
+    }}
   />
 
   const results = <Results/>

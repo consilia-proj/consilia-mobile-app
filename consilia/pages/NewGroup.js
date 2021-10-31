@@ -27,7 +27,9 @@ export default function NewGroup(props) {
       />
       <Text style={styles.inputLabel}>Date</Text>
       <DatePicker date={date} onDateChange={setDate} style={{marginTop: -60}} />
-      <NextButton onPress={() => {props.onNext(groupName, date)}}/>
+      <NextButton onPress={() => {props.onNext(groupName, date)}} 
+        disabled={groupName.trim().length == 0}
+      />
       <TouchableOpacity style={styles.goHome} onPress={props.goHome}>
         <Text>Return Home</Text>
       </TouchableOpacity>  

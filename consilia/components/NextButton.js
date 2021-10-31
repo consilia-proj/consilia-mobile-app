@@ -3,7 +3,7 @@ import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 export default function NextButton(props) {
   return (
-    <TouchableOpacity style={styles.next} onPress={props.onPress}>
+    <TouchableOpacity style={styles.next} onPress={props.onPress} disabled={props.disabled}>
       <Text style={{fontSize: 18}}>Next</Text>
     </TouchableOpacity>
   )
