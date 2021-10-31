@@ -31,7 +31,6 @@ export default function CategorySelector(props) {
       {groupInfo.name && <Text style={styles.groupInfo}>{groupInfo.name}</Text>}
       {groupInfo.startDate && <Text style={styles.groupInfo}>{groupInfo.startDate.toString().split(" GMT")[0].slice(0, -3)}</Text>}
 
-      <ScrollView style={{flexGrow: 0, width: "100%", maxHeight: 400, marginBottom: 20}} fadingEdgeLength={100} contentContainerStyle={{alignItems: "center"}}>
       {props.categories && props.categories.map((cat, i) => {
         let mod = i % 6
         let red = (mod <= 2 || mod == 5) ? 255 : 0
@@ -44,11 +43,11 @@ export default function CategorySelector(props) {
             color={`rgba(${red}, ${green}, ${blue}, .4)`}
             text={cat}
             key={i}
+            isSelected={(category == cat)}
             selected={(category == cat)}
           />
         )
       })}
-      </ScrollView>
       <NextButton onPress={() => makeGroup()}></NextButton>
       <TouchableOpacity onPress={props.goBack}>
         <Text style={{color: "black", marginTop: 20}}>Go back</Text>
