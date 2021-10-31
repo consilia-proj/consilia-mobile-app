@@ -8,7 +8,7 @@ import { tsConstructorType } from '@babel/types';
 import TinderCard from 'react-tinder-card'
 import { GroupInfoContext } from '../contexts/GroupInfo';
 import { UserInfoContext } from '../contexts/UserInfo';
-
+const pholder = require('../assets/images/hacktx2021.png')
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREENWIDTH = Dimensions.get('window').width;
@@ -107,6 +107,7 @@ function PlaceVotes(props) {
       <TouchableOpacity onPress={props.goHome}>
         <Text>Return Home</Text>
       </TouchableOpacity> 
+      <TextInput style={{backgroundColor: "white", borderWidth: 1, marginVertical: 2}} value={groupInfo.eventID}/>
       
       <CardContainer>
 
@@ -118,7 +119,7 @@ function PlaceVotes(props) {
               
                 {item.rating != -1 && <Text style={styles.rating}>{item.rating} stars</Text>}
                 <Image style={styles.img} 
-                source={{uri: item.imageURL}}></Image>
+                source={item.imageURL == "" ? pholder : {uri: item.imageURL} }></Image>
                 <View style={{flexDirection:"row"}}>
               
                 </View>
