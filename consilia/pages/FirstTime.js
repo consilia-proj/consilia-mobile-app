@@ -1,7 +1,7 @@
 import React, {useState, useContext} from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, Image } from 'react-native';
 import ProfileCorner from '../components/ProfileCorner';
-import { UserInfoContext } from '../UserInfo';
+import { UserInfoContext } from '../contexts/UserInfo';
 
 export default function FirstTime(props) {
   const userInfo = useContext(UserInfoContext)
@@ -17,18 +17,22 @@ export default function FirstTime(props) {
         onChangeText={text => setFirst(text)}
         value={first}
       />
-      <Text style={styles.nameTxt}>First</Text>
+      <Text style={styles.nameTxt}>First name (required)</Text>
       <TextInput 
         style={styles.nameInput}
         onChangeText={text => setLast(text)}
         value={last}
       />
-      <Text style={styles.nameTxt}>Last</Text>
+      <Text style={styles.nameTxt}>Last name (optional)</Text>
       <TouchableOpacity styles={styles.pfpButton}>
         <Image style={styles.pfp} source={require("../assets/images/placeholder.jpg")}></Image>
       </TouchableOpacity>
       <Text style={styles.nameTxt}>Profile Picture (optional)</Text>
-      <TouchableOpacity onPress={() => props.onSubmit(first, last)} style={styles.continueButton}>
+      <TouchableOpacity 
+        onPress={() => props.onSubmit(first, last)} 
+        style={styles.continueButton}
+        disabled={first.trim().length > 0 ? false : true}
+      >
         <Text style={{fontSize: 15}}>Continue</Text>
       </TouchableOpacity>
     </View>

@@ -1,18 +1,35 @@
-import React from 'react';
+import React, {useState, useContext} from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
-import EventType from '../components/EventType';
+import NextButton from '../components/NextButton';
+import DatePicker from 'react-native-date-picker'
+import { UserInfoContext } from '../contexts/UserInfo';
+import { GroupInfoContext } from '../contexts/GroupInfo';
+
 
 export default function NewGroup(props) {
+  const userInfo = useContext(UserInfoContext)
+  const groupInfo = useContext(GroupInfoContext)
+  const [groupName, setGroupName] = useState(groupInfo && groupInfo.groupName ? groupInfo.groupName : "")
+  const [date, setDate] = useState(groupInfo && groupInfo.date ? groupInfo.date : new Date())
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Create New Event</Text>
-      <TextInput style={styles.input}/>
+      <TextInput style={styles.input} 
+        value={groupName} 
+        onChangeText={text => setGroupName(text)}
+      />
       <Text style={styles.inputLabel}>Group Name</Text>
-      <TextInput style={styles.input}/>
+      <TextInput 
+        editable={false} 
+        style={styles.input} 
+        value={date.toString().split(" GMT")[0]}
+      />
       <Text style={styles.inputLabel}>Date</Text>
-      <TouchableOpacity style={styles.next} onPress={props.onNext}>
-        <Text style={{fontSize: 18}}>Next</Text>
-      </TouchableOpacity>
+      <DatePicker date={date} onDateChange={setDate} style={{marginTop: -60}} />
+      <NextButton onPress={() => {props.onNext(groupName, date)}} 
+        disabled={groupName.trim().length == 0}
+      />
       <TouchableOpacity style={styles.goHome} onPress={props.goHome}>
         <Text>Return Home</Text>
       </TouchableOpacity>  
@@ -45,17 +62,7 @@ const styles = StyleSheet.create({
     color: "#222",
     fontSize: 16
   },
-  next: {
-    width: "55%",
-    height: 60,
-    backgroundColor: "rgba(0, 50, 255, .4)",
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 1,
-    borderColor: "#000",
-    marginBottom: 30
-  },
   goHome: {
-
+    marginTop: 30
   }
 })

@@ -2,10 +2,13 @@ import React, {useState, useEffect, useContext} from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, TextInput, Touchable, ImageBackground } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import ProfileCorner from '../components/ProfileCorner';
+
 import { UserInfoContext } from '../UserInfo';
 import Card from '../components/card'
 import { brandColor, brandSubColor } from '../constants/colors'
 import mapImg from '../constants/mapfad.png';
+
+import { UserInfoContext } from '../contexts/UserInfo';
 export default function HomePage(props) {
   const userInfo = useContext(UserInfoContext)
   

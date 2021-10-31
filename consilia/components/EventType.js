@@ -4,26 +4,25 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 export default function EventType(props) {
   return (
     <TouchableOpacity 
-      style={[styles.option, {backgroundColor: props.color}]}
+      style={[styles.option, {backgroundColor: props.color, borderWidth: props.selected ? 2: 1}]}
       onPress={props.onPress}
     >
-      <Text style={styles.txt}>{props.text}</Text>
+      <Text style={[styles.txt]}>{props.text}</Text>
     </TouchableOpacity>
   )
 }
 
 const styles = StyleSheet.create({
   option: {
-    width: '70%',
-    height: '15%',
-    marginVertical: '6%',
+    width: "90%",
+    height: 70,
+    marginBottom: 15,
     borderColor: 'black',
-    borderWidth: 1,
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
   txt: {
-    fontSize: 22
+    fontSize: 22,
   }
 })
