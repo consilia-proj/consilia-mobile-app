@@ -13,19 +13,24 @@ export default function Results(props) {
   const [placez, setPlaces] = useState([]);
 
 
+function load() 
+{
+  fetch(`http://35.239.35.148/Event/${groupInfo.eventID}/votes`)
+  .then(response => response.json())
+  .then(data => {
+    console.log(data)
+    setPlaces(data);
+  })
+}
+
   useEffect(() => {
-    fetch(`http://35.239.35.148/Event/${groupInfo.eventID}/votes`)
-      .then(response => response.json())
-      .then(data => {
-        console.log(data)
-        setPlaces(data);
-      })
+   load()
   }, [])
 
   return (
     <View style={styles.container}>
       <Text style={[styles.title, { textAlign: 'center', marginTop: RFValue(50) }]}>Current Results</Text>
-    
+
     <ScrollView style={{width: "100%"}}>
       {placez.map((item, index) => {return(
         <Card key={index} color="#eee" style={{width: "92%"}}>
@@ -35,7 +40,9 @@ export default function Results(props) {
         </Card>
       )})}
       </ScrollView>
-      
+      <TouchableOpacity style={styles.goHome} onPress={(e) => {load();}}>
+        <Text>Reload</Text>
+      </TouchableOpacity>  
     </View>
   )
 }
