@@ -4,6 +4,7 @@ import EventType from '../components/EventType';
 import TransportMode from '../components/TransportMode';
 import PlaceData from '../components/PlaceData';
 import { tsConstructorType } from '@babel/types';
+import { PanResponderclass } from 'PanResponderClass';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREENWIDTH = Dimensions.get('window').width;
@@ -34,11 +35,12 @@ const data = [
 
 
 export default function PlaceVotes(props) {
-
+    
     var renderPlaces = () =>{
         return data.map((item,i) =>{
             return(
-                <Animated.View key={item.PlaceID} style={styles.animated}>
+                <Animated.View 
+                key={item.PlaceID} style={styles.animated}>
                     <Text style={styles.titleText}>{item.Name}</Text>
                     <Text style={styles.desc}>{item.Description}</Text>
                     <Image style={styles.img} 
@@ -51,12 +53,10 @@ export default function PlaceVotes(props) {
   
     return (
     <View style={styles.container}>
-    
-      {renderPlaces()}
-
       <TouchableOpacity onPress={props.goHome}>
         <Text>Return Home</Text>
-      </TouchableOpacity>  
+      </TouchableOpacity> 
+      {renderPlaces()}
     </View>
   )
 }
