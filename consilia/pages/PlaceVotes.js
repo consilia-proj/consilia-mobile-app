@@ -103,6 +103,7 @@ function PlaceVotes(props) {
       </TouchableOpacity> 
       
       <CardContainer>
+
         {places.map((item, index) =>
           <TinderCard ref={childRefs[index]} key={item.placeID} onSwipe={(dir) => swiped(dir, item.placeID)} onCardLeftScreen={() => outOfFrame(item.placeID)}>
             <Card>

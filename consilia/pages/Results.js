@@ -2,17 +2,40 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList, TextInput, Image } from 'react-native';
 import EventType from '../components/EventType';
 import TransportMode from '../components/TransportMode';
+import { RFValue } from 'react-native-responsive-fontsize';
 
+import { useState, useEffect, useContext } from 'react';
+import { GroupInfoContext } from '../contexts/GroupInfo';
+
+import Card from '../components/card';
 export default function Results(props) {
+  const groupInfo = useContext(GroupInfoContext);
+  const [placez, setPlaces] = useState([]);
+
+
+  useEffect(() => {
+    fetch(`http://35.239.35.148/Event/${groupInfo.eventID}/votes`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        setPlaces(data);
+      })
+  }, [])
+
   return (
     <View style={styles.container}>
-      <TextInput style={styles.linkStyle}>{props.link}</TextInput>
-      <Text style={styles.titleText}>{props.title}</Text>
-      <Image style={styles.img} source={
-        {uri: "https://edm.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cq_auto:good%2Cw_1200/MTczNjY4MTk3OTU2ODU1NzE3/austin-city-limits.jpg"}
-      }></Image>
-      <Text>{props.distance} away</Text>
-      <Text>{props.rating} stars</Text>
+      <Text style={[styles.title, { textAlign: 'center', marginTop: RFValue(50) }]}>Current Results</Text>
+    
+    <ScrollView style={{width: "100%"}}>
+      {placez.map((item, index) => {return(
+        <Card color="#eee" style={{width: "92%"}}>
+          <Text style={{color: "black", fontWeight: "bold"}}>{item.name}</Text>
+          <Text style={{color: "black"}}>Votes: {item.points}</Text>
+          {item.rating != -1 && <Text style={{color: "black"}}>Rating: {item.rating}/5</Text>}
+        </Card>
+      )})}
+      </ScrollView>
+      
     </View>
   )
 }
@@ -27,6 +50,11 @@ const styles = StyleSheet.create({
   img: {
     width: "95%",
     height: 500
+  },
+  title: {
+    fontSize: RFValue(25),
+    fontWeight: "bold",
+    color: "#000000"
   },
   linkStyle: {
     backgroundColor: "white",

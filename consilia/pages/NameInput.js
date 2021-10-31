@@ -13,6 +13,20 @@ export default function NameInput(props) {
   const [first, setFirst] = useState(userInfo && userInfo.first ? userInfo.first : "")
   const [last, setLast] = useState(userInfo && userInfo.last ? userInfo.last : "")
 
+  function regUser() {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        firstName: first,
+        lastName: last,
+        ssoKey: "aaaaaa"
+      })
+    };
+    fetch('http://35.239.35.148/User/', requestOptions)
+      .then(response => response.json())
+      .then(data => {console.log(data);  props.onSubmit(first, last, data.userUUID);});
+  }
 
   return (
     <View style={styles.container}>
@@ -36,7 +50,7 @@ export default function NameInput(props) {
               onChangeText={(e) => { setLast(e) }}
           />
         </View>
-        <TouchableOpacity onPress={() => props.onSubmit(first, last)} style={styles.link}>
+        <TouchableOpacity onPress={() => {regUser();}} style={styles.link}>
             <Card color={brandColor} style={{ height: "100%", }}>
                 <Text style={[styles.subcontent, { textAlign: 'center' }]}>Continue</Text>
             </Card>
