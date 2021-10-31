@@ -1,19 +1,40 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList, TextInput, Image } from 'react-native';
 import { GroupInfoContext } from '../contexts/GroupInfo';
 
 
+function greatCircleDist(a, b) { // distance (in mi) on Earth's surface as the crow flies.
+  // r*arccos(sin φ1 sin φ2 cos(θ1-θ2) + cos φ1 cos φ2).
+  return 3959*Math.acos(Math.sin((90 - a[0])*Math.PI/180)*Math.sin((90 - b[0])*Math.PI/180) * Math.cos((a[1] - b[1])*Math.PI/180) + Math.cos((90 - a[0])*Math.PI/180)*Math.cos((90 - b[0])*Math.PI/180))
+}
+
 export default function PlaceVotes(props) {
   const groupInfo = useContext(GroupInfoContext)
+  const [places, setPlaces] = useState(null);
+
+
+  useEffect(() => {
+    fetch(`http://35.239.35.148/Event/${groupInfo.eventID}/votes`)
+      .then(response => response.json())
+      .then(data => {
+        setPlaces(data);
+      })
+  }, [])
+
   return (
     <View style={styles.container}>
       <TextInput style={styles.linkStyle} value={groupInfo && groupInfo.eventID ? groupInfo.eventID : ""}>{props.link}</TextInput>
       <Text style={styles.titleText}>{props.title}</Text>
-      <Image style={styles.img} source={
-        {uri: "https://edm.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cq_auto:good%2Cw_1200/MTczNjY4MTk3OTU2ODU1NzE3/austin-city-limits.jpg"}
-      }></Image>
-      <Text>{props.distance} away</Text>
-      <Text>{props.rating} stars</Text>
+      {places && places.map((place, i) => (
+        <View key={i}>
+          <Image style={styles.img} source={
+            {uri: place.imageURL}
+          }></Image>
+          <Text>{greatCircleDist([groupInfo.locationLat, groupInfo.locationLong], [place.latitude, place.longitude])} away</Text>
+          <Text>{place.rating} stars</Text>
+        </View>
+      ))}
+      
 
       <TouchableOpacity onPress={props.goHome}>
         <Text>Return Home</Text>
