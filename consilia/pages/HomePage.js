@@ -18,10 +18,10 @@ export default function HomePage(props) {
     <View style={styles.container}>
       <Text style={[styles.title, {width: "80%"}]}  onPress={props.touchTitle}>Welcome, {userInfo.first}</Text>
       <Text style={[styles.subtitle, {width: "80%"}]} onPress={props.touchTitle}>Austin, Texas</Text>
-      <Image style={{height: "100%", zIndex: -2, position: "absolute"}} resizeMode="contain" resizeMethod="scale" source={mapImg}/>
+      <Image style={{height: "100%", zIndex: -2, marginTop:-25, position: "absolute"}} resizeMode="contain" resizeMethod="scale" source={mapImg}/>
 
       
-      <TouchableOpacity onPress={props.createEvent} style={[styles.link, {marginTop: 350}]}>
+      <TouchableOpacity onPress={props.createEvent} style={[styles.link, {marginTop: 420}]}>
         <Card color={brandColor} style={{ height: "100%", }}>
             <Text style={[styles.subcontent, { textAlign: 'center' }]}>Create Plans</Text>
         </Card>

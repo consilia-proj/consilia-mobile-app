@@ -28,12 +28,14 @@ export default function App() {
   function fetchUserInfo() {
     setUserInfo({first: "Ben", last: "Gordon", pfp: null}) 
   }
+
+ 
   
 
   const firstTime = <NameInput 
     userInfo={userInfo}
-    onSubmit={(first, last) => {
-      setUserInfo({first: first, last: last, pfp: null})
+    onSubmit={(first, last, uuid) => {
+      setUserInfo({first: first, last: last, uuid: uuid, pfp: null})
       setPage(home)
     }
   }/>
@@ -80,6 +82,9 @@ export default function App() {
     goHome={() => {
       setPage(home)
       setGroupInfo({...location})
+    }}
+    finalScreen={() => {
+      setPage(results)
     }}
   />
 

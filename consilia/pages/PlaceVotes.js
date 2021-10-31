@@ -45,10 +45,13 @@ function PlaceVotes(props) {
 
     const childRefs = useMemo(() => Array(data.length).fill(0).map(i => React.createRef()), [])
 
-    const swiped = (direction, nameToDelete) => {
+    const swiped = (direction, nameToDelete, i) => {
         console.log('removing: ' + nameToDelete + ' to the ' + direction)
         setLastDirection(direction)
         alreadyRemoved.push(nameToDelete)
+        if(i == data.length - 1) {
+          props.finalScreen();
+        }
     }
 
     
@@ -77,7 +80,7 @@ function PlaceVotes(props) {
       
       <CardContainer>
         {data.map((item, index) =>
-          <TinderCard ref={childRefs[index]} key={item.PlaceID} onSwipe={(dir) => swiped(dir, item.PlaceID)} onCardLeftScreen={() => outOfFrame(item.PlaceID)}>
+          <TinderCard ref={childRefs[index]} key={item.PlaceID} onSwipe={(dir) => swiped(dir, item.PlaceID, index)} onCardLeftScreen={() => outOfFrame(item.PlaceID)}>
             <Card>
                 <Text style={styles.titleText}>{item.Name}</Text>
                 <Text style={styles.desc}>{item.Description}</Text>
