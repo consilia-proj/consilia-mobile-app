@@ -62,9 +62,6 @@ function PlaceVotes(props) {
         console.log('removing: ' + nameToDelete + ' to the ' + direction)
         setLastDirection(direction)
         alreadyRemoved.push(nameToDelete)
-        if(i == data.length - 1) {
-          props.finalScreen();
-        }
     }
 
     
@@ -97,27 +94,24 @@ function PlaceVotes(props) {
       <CardContainer>
 
         {places.map((item, index) =>
-          <TinderCard ref={childRefs[index]} key={item.placeID} onSwipe={(dir) => swiped(dir, item.placeID)} onCardLeftScreen={() => outOfFrame(item.placeID)}>
-            <Card>
+       
+         <TinderCard ref={childRefs[index]} key={item.placeID} onSwipe={(dir) => swiped(dir, item.placeID)} onCardLeftScreen={() => outOfFrame(item.placeID)}>
+            <Card style={{width: "100%", padding: 20}}>
                 <Text style={styles.titleText}>{item.name}</Text>
-                <Text style={styles.desc}>{item.description}</Text>
-                <Text style={styles.rating}>{item.rating} stars</Text>
+              
+                {item.rating != -1 && <Text style={styles.rating}>{item.rating} stars</Text>}
                 <Image style={styles.img} 
                 source={{uri: item.imageURL}}></Image>
                 <View style={{flexDirection:"row"}}>
-                <View style={{flex:1}}>
-                    <Text style={{justifyContent: 'flex-start', fontSize: 12}}>Dislike</Text>
+              
                 </View>
-                <View style={{flex:1}}>
-                    <Text style={{justifyContent: 'flex-end', textAlign: 'right', fontSize:12}}>Like</Text>
-                </View>
-        </View>
             </Card>
           </TinderCard>
         ).reverse()}
         
       </CardContainer>
-        
+        <Text style={{marginTop: 20}}>Swipe right if you want to go there</Text>
+        <Text>Swipe left if you don't</Text>
       {/* {lastDirection ? <InfoText>You swiped {lastDirection}</InfoText> : <InfoText />} */}
     
     </View>
@@ -144,13 +138,10 @@ const styles = StyleSheet.create({
   card:{
       flex: 0.45,
       borderRadius: 8,
-      shadowRadius:25,
-      shadowColor: '#000',
-      shadowOpacity: 0.08,
-      shadowOffset: {width:0, height:0},
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: 'fff'
+      backgroundColor: 'fff',
+      width: "100%"
 
   },
   cardImage: {
@@ -160,7 +151,7 @@ const styles = StyleSheet.create({
   },
   img: {
       flex:1,
-      width: "95%",
+      width: "100%",
       height: 500,
       borderRadius:20
   },
@@ -180,6 +171,7 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 30,
     marginBottom: 5,
+    fontWeight: "bold"
   },
   desc: {
       fontSize: 12
@@ -201,12 +193,10 @@ const CardContainer = styled.View`
 const Card = styled.View`
     position: absolute;
     background-color: #fff;
-    width: 100%;
-    max-width: 260px;
+    width: 10%;
     height: 600px;
-    shadow-color: black;
-    shadow-opacity: 0.2;
-    shadow-radius: 20px;
+    border-color: black;
+    border-width: 1px;
     border-radius: 20px;
     resize-mode: cover;
     justify-content: center;
