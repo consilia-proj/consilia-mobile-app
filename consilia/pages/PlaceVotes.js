@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
+import styled from 'styled-components'
 import { Animated, PanResponder, View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList, TextInput, Image, Dimensions } from 'react-native';
 import EventType from '../components/EventType';
 import TransportMode from '../components/TransportMode';
 import PlaceData from '../components/PlaceData';
 import { tsConstructorType } from '@babel/types';
-import { PanResponderclass } from 'PanResponderClass';
+import TinderCard from 'react-tinder-card'
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREENWIDTH = Dimensions.get('window').width;
@@ -33,33 +34,65 @@ const data = [
     }
 ]
 
+const alreadyRemoved = []
 
-export default function PlaceVotes(props) {
-    
-    var renderPlaces = () =>{
-        return data.map((item,i) =>{
-            return(
-                <Animated.View 
-                key={item.PlaceID} style={styles.animated}>
-                    <Text style={styles.titleText}>{item.Name}</Text>
-                    <Text style={styles.desc}>{item.Description}</Text>
-                    <Image style={styles.img} 
-                    source={{uri: item.ImageURL}}></Image>
-                    <Text>{item.Rating} stars</Text>
-                </Animated.View>
-            )
-        })
+function PlaceVotes(props) {
+    const [lastDirection, setLastDirection] = useState()
+
+    const swiped = (direction, nameToDelete) => {
+        console.log('removing: ' + nameToDelete)
+        setLastDirection(direction)
     }
+
+    const outOfFrame = (Name) => {
+        console.log(Name + ' left the screen!')
+    }
+
+    // var renderPlaces = () =>{
+    //     return data.map((item,i) =>{
+    //         return(
+                
+      
+                // <Animated.View 
+                // key={item.PlaceID} style={styles.animated}>
+                //     <Text style={styles.titleText}>{item.Name}</Text>
+                //     <Text style={styles.desc}>{item.Description}</Text>
+                //     <Image style={styles.img} 
+                //     source={{uri: item.ImageURL}}></Image>
+                //     <Text>{item.Rating} stars</Text>
+                // </Animated.View>
+    //         )
+    //     })
+    // }
   
     return (
     <View style={styles.container}>
       <TouchableOpacity onPress={props.goHome}>
         <Text>Return Home</Text>
       </TouchableOpacity> 
-      {renderPlaces()}
+      
+      <CardContainer>
+        {data.map((item, i) =>
+          <TinderCard key={item.Name} onSwipe={(dir) => swiped(dir, item.Name)} onCardLeftScreen={() => outOfFrame(item.Name)}>
+            <Card>
+                <Text style={styles.titleText}>{item.Name}</Text>
+                <Text style={styles.desc}>{item.Description}</Text>
+                <Image style={styles.img} 
+                source={{uri: item.ImageURL}}></Image>
+                <Text style={styles.rating}>{item.Rating} stars</Text>
+            </Card>
+          </TinderCard>
+        ).reverse()}
+      </CardContainer>
+      
+      {lastDirection ? <InfoText>You swiped {lastDirection}</InfoText> : <InfoText />}
+    
     </View>
   )
 }
+
+
+export default PlaceVotes;
 
 const styles = StyleSheet.create({
   animated:{
@@ -88,7 +121,7 @@ const styles = StyleSheet.create({
 
   },
   cardImage: {
-      width: 160,
+      width: 200,
       flex: 1,
       resizeMode: 'contain'
   },
@@ -107,11 +140,46 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 10
   },
+  rating: {
+    backgroundColor: '#fff'
+  },
   titleText: {
     fontSize: 30,
     marginBottom: 10,
   },
   desc: {
       fontSize: 16
-  }
+  },
+
 })
+
+
+
+const CardContainer = styled.View`
+    width: 95%;
+    max-width: 400px;
+    text-align: center;
+    height: 100%;
+    padding: 20px;
+`
+
+const Card = styled.View`
+    position: absolute;
+    background-color: #fff;
+    width: 100%;
+    max-width: 260px;
+    height: 600;
+    shadow-color: black;
+    shadow-opacity: 0.2;
+    shadow-radius: 20px;
+    border-radius: 20px;
+    resize-mode: cover;
+    justify-content: center;
+`
+
+
+const InfoText = styled.Text`
+    height: 28px;
+    justify-content: center;
+    display: flex;
+`
