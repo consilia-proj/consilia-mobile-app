@@ -1,28 +1,27 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-
+import Card from './card';
+import { brandColor } from '../constants/colors';
 export default function EventType(props) {
   return (
-    <TouchableOpacity 
-      style={[styles.option, {backgroundColor: props.color, borderWidth: props.selected ? 2: 1}]}
-      onPress={props.onPress}
-    >
-      <Text style={[styles.txt]}>{props.text}</Text>
-    </TouchableOpacity>
-  )
+   <TouchableOpacity onPress={props.onPress} disabled={props.disabled} style={styles.link}>
+   <Card color={props.color} style={{ height: "60%", }}>
+       <Text style={[styles.subcontent, { textAlign: 'center' }]}>{props.text}</Text>
+   </Card>
+   </TouchableOpacity>
+)
 }
 
 const styles = StyleSheet.create({
-  option: {
-    width: "90%",
-    height: 70,
-    marginBottom: 15,
-    borderColor: 'black',
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  txt: {
-    fontSize: 22,
-  }
+link: {
+height: 90,
+paddingHorizontal: 15,
+width: "100%",
+},
+
+subcontent: {
+fontSize: 20,
+fontWeight: 'bold',
+color: 'black'
+},
 })

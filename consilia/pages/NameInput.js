@@ -1,7 +1,7 @@
 import React, {useState, useContext} from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, Image } from 'react-native';
 import ProfileCorner from '../components/ProfileCorner';
-import { UserInfoContext } from '../UserInfo';
+import { UserInfoContext } from '../contexts/UserInfo';
 import Card from '../components/card'
 import { brandColor } from '../constants/colors';
 import { brandName } from '../constants/strings';
@@ -17,19 +17,21 @@ export default function NameInput(props) {
   return (
     <View style={styles.container}>
         <Text style={[styles.title, { textAlign: 'center', marginTop: RFValue(50) }]}>What's Your Name?</Text>
-       
+        <Text style={{color: "black", textAlign: "center", maxWidth: "90%"}}>Tell us so everyone knows what to call you.</Text>
        <View style={[styles.containersm, {marginTop: RFValue(200), width: "100%"}]}>
           <TextInput
               style={[styles.input, props.style]}
               value={props.value}
               placeholder={"First Name"}
               placeholderTextColor="#bababa"
+              color="#343434"
               onChangeText={(e) => { setFirst(e) }}
           />
           <TextInput
               style={[styles.input, props.style]}
               value={props.value}
               placeholder={"Last Name"}
+              color="#343434"
               placeholderTextColor="#bababa"
               onChangeText={(e) => { setLast(e) }}
           />
