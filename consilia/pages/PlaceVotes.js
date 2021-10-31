@@ -1,4 +1,4 @@
-import React, {useState, useMemo} from 'react';
+import React, {useState, useMemo, useEffect, useContext} from 'react';
 import styled from 'styled-components'
 import {Button, View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList, TextInput, Image, Dimensions } from 'react-native';
 import EventType from '../components/EventType';
@@ -6,31 +6,33 @@ import TransportMode from '../components/TransportMode';
 import PlaceData from '../components/PlaceData';
 import { tsConstructorType } from '@babel/types';
 import TinderCard from 'react-tinder-card'
+import { GroupInfoContext } from '../contexts/GroupInfo';
+
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREENWIDTH = Dimensions.get('window').width;
 const data = [
     {
-        "PlaceID" : "1",
-        "EventID" : "ajdfln1-2341",
-        "Rating" : 3.8,
-        "Name" : "ACL",
-        "Description" : "Music festival to get high at",
-        "Longitude" : -92.001,
-        "Latitude" : 30.43,
-        "ImageURL" : "https://edm.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cq_auto:good%2Cw_1200/MTczNjY4MTk3OTU2ODU1NzE3/austin-city-limits.jpg",
-        "GooglePlaceID" : "lksdjfano32",
+        "placeID" : "1",
+        "eventID" : "ajdfln1-2341",
+        "rating" : 3.8,
+        "name" : "ACL",
+        "description" : "Music festival to get high at",
+        "longitiude" : -92.001,
+        "latitude" : 30.43,
+        "imageURL" : "https://edm.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cq_auto:good%2Cw_1200/MTczNjY4MTk3OTU2ODU1NzE3/austin-city-limits.jpg",
+        "googlePlaceId" : "lksdjfano32",
     },
     {
-        "PlaceID" : "2",
-        "EventID" : "sdfnmkglfer",
-        "Rating" : 4.0,
-        "Name" : "Fuddruckers",
-        "Description" : "Burger place that fudds",
-        "Longitude" : -92.3201,
-        "Latitude" : 30.42,
-        "ImageURL" : "https://3e87eb59177583ca20e5-3c4f8e07d4ab2f5f48a61d1d9b0d1b8c.ssl.cf2.rackcdn.com/20161012095655-f59db4bc.jpg",
-        "GooglePlaceID" : "lksdjfano32",
+        "placeID" : "2",
+        "eventID" : "sdfnmkglfer",
+        "rating" : 4.0,
+        "name" : "Fuddruckers",
+        "description" : "Burger place that fudds",
+        "longitiude" : -92.3201,
+        "latitude" : 30.42,
+        "imageURL" : "https://3e87eb59177583ca20e5-3c4f8e07d4ab2f5f48a61d1d9b0d1b8c.ssl.cf2.rackcdn.com/20161012095655-f59db4bc.jpg",
+        "googlePlaceId" : "lksdjfano32",
     }
 ]
 
@@ -42,8 +44,18 @@ let placesState = data
 function PlaceVotes(props) {
     const [places, setPlaces] = useState(data)
     const [lastDirection, setLastDirection] = useState()
+    const groupInfo = useContext(GroupInfoContext)
 
     const childRefs = useMemo(() => Array(data.length).fill(0).map(i => React.createRef()), [])
+
+    useEffect(() => {
+      fetch(`http://35.239.35.148/Event/${groupInfo.eventID}/votes`)
+        .then(response => response.json())
+        .then(newData => {
+          console.log("newData.length:" + newData.length)
+          setPlaces(newData);
+        }).then(console.log("places.length:" + places.length))
+    }, [])
 
     const swiped = (direction, nameToDelete) => {
         console.log('removing: ' + nameToDelete + ' to the ' + direction)
@@ -53,21 +65,24 @@ function PlaceVotes(props) {
 
     
 
-    const outOfFrame = (PlaceID) => {
-        console.log(PlaceID + ' left the screen!')
-        placesState = placesState.filter(place => place.PlaceID !== PlaceID)
-        setPlaces(placesState)
+    const outOfFrame = (placeID) => {
+        console.log(placeID + ' left the screen!')
+        newPlaces = places.filter(place => place.placeID != placeID && !alreadyRemoved.includes(place.placeID))
+        setPlaces(newPlaces)
+        if (newPlaces.length === 0) {
+          props.goToResults()
+        }
     }
 
-    const swipe = (dir) => {
-        const cardsLeft = places.filter(place => !alreadyRemoved.includes(place.PlaceID))
+    /*const swipe = (dir) => {
+        const cardsLeft = places.filter(place => !alreadyRemoved.includes(place.placeID))
         if (cardsLeft.length) {
-            const toBeRemoved = cardsLeft[cardsLeft.length - 1].PlaceID // Find the card object to be removed
-            const index = data.map(Place => Place.PlaceID).indexOf(toBeRemoved) // Find the index of which to make the reference to
+            const toBeRemoved = cardsLeft[cardsLeft.length - 1].placeID // Find the card object to be removed
+            const index = data.map(Place => Place.placeID).indexOf(toBeRemoved) // Find the index of which to make the reference to
             alreadyRemoved.push(toBeRemoved) // Make sure the next card gets removed next time if this card do not have time to exit the screen
             childRefs[index].current.swipe(dir) // Swipe the card!
         }
-    }
+    }*/
   
     return (
     <View style={styles.container}>
@@ -76,14 +91,14 @@ function PlaceVotes(props) {
       </TouchableOpacity> 
       
       <CardContainer>
-        {data.map((item, index) =>
-          <TinderCard ref={childRefs[index]} key={item.PlaceID} onSwipe={(dir) => swiped(dir, item.PlaceID)} onCardLeftScreen={() => outOfFrame(item.PlaceID)}>
+        {places.map((item, index) =>
+          <TinderCard ref={childRefs[index]} key={item.placeID} onSwipe={(dir) => swiped(dir, item.placeID)} onCardLeftScreen={() => outOfFrame(item.placeID)}>
             <Card>
-                <Text style={styles.titleText}>{item.Name}</Text>
-                <Text style={styles.desc}>{item.Description}</Text>
-                <Text style={styles.rating}>{item.Rating} stars</Text>
+                <Text style={styles.titleText}>{item.name}</Text>
+                <Text style={styles.desc}>{item.description}</Text>
+                <Text style={styles.rating}>{item.rating} stars</Text>
                 <Image style={styles.img} 
-                source={{uri: item.ImageURL}}></Image>
+                source={{uri: item.imageURL}}></Image>
                 <View style={{flexDirection:"row"}}>
                 <View style={{flex:1}}>
                     <Text style={{justifyContent: 'flex-start', fontSize: 12}}>Dislike</Text>

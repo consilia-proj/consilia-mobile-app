@@ -81,6 +81,9 @@ export default function App() {
       setPage(home)
       setGroupInfo({...location})
     }}
+    goToResults={
+      () => setPage(results)
+    }
   />
 
   const results = <Results/>
