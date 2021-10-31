@@ -87,9 +87,9 @@ export const MicroFeatureCard = (props) =>
 (
   <View style={[props.style, { borderRadius: 15, marginHorizontal: 10, backgroundColor: "transparent", marginVertical: RFPercentage(.5) }]}>
      <View style={{ flexDirection: 'row',  backgroundColor: "transparent" }}>
-     <Ionicons name={props.icon} size={24} color={props.iconcolor}/>
+     <Icon name={props.icon} size={RFValue(24)} color={props.iconcolor}/>
      <View style={{marginTop:RFValue(5), marginLeft:20, backgroundColor: "transparent"}}>
-      <Text>{props.content}</Text>
+      <Text style={{color: '#000000', fontSize: RFValue(10)}}>{props.content}</Text>
      </View>
      </View>
   </View>

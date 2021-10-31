@@ -14,15 +14,20 @@ export default function NewGroup(props) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Create New Event</Text>
-      <TextInput style={styles.input} 
-        value={groupName} 
-        onChangeText={text => setGroupName(text)}
-      />
-      <Text style={styles.inputLabel}>Group Name</Text>
+      <Text style={styles.title}>Create Plans</Text>
+      <TextInput
+              style={[styles.input, props.style]}
+              value={props.value}
+              placeholder={"Group Name"}
+              color="#343434"
+              placeholderTextColor="#bababa"
+              onChangeText={(e) => { setGroupName(e) }}
+          />
       <TextInput 
         editable={false} 
         style={styles.input} 
+        placeholderTextColor="#bababa"
+        color="#343434"
         value={date.toString().split(" GMT")[0]}
       />
       <Text style={styles.inputLabel}>Date</Text>
@@ -38,24 +43,26 @@ export default function NewGroup(props) {
 }
 
 const styles = StyleSheet.create({
+  input: {
+    height: 40,
+    borderRadius: 5,
+    backgroundColor: 'rgba(225,225,225,.75)',
+    padding: 5,
+    width: "90%",
+    marginBottom: 10
+},
   container: {
     height: '100%',
     alignItems: 'center',
     justifyContent: 'flex-start',
+    backgroundColor: "white"
   },
   title: {
     fontSize: 32,
     marginTop: 15,
     marginBottom: 48,
+    color: "black"
   },
-  input: {
-    width: "60%",
-    marginRight: 10,
-    height: 30,
-    borderWidth: 1,
-    borderColor: "black",
-    paddingHorizontal: 2,
-  }, 
   inputLabel: {
     marginTop: 3,
     marginBottom: 60,

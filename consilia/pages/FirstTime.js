@@ -12,6 +12,7 @@ export default function FirstTime(props) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Consilia</Text>
+      <Text style={{color: "black"}}>Let us know so everyone knows what to call you.</Text>
       <TextInput 
         style={styles.nameInput}
         onChangeText={text => setFirst(text)}

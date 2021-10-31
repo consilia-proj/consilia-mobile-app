@@ -3,7 +3,6 @@ import { View, Text, TouchableOpacity, StyleSheet, Image, TextInput, Touchable, 
 import { RFValue } from 'react-native-responsive-fontsize';
 import ProfileCorner from '../components/ProfileCorner';
 
-import { UserInfoContext } from '../UserInfo';
 import Card from '../components/card'
 import { brandColor, brandSubColor } from '../constants/colors'
 import mapImg from '../constants/mapfad.png';
@@ -32,7 +31,7 @@ export default function HomePage(props) {
     <View style={{height: 350}}>
 
       </View>
-      <TouchableOpacity onPress={props.createEvent} style={[styles.link, {marginTop:12}]}>
+      <TouchableOpacity onPress={props.createEvent} style={[styles.link, {marginTop:20}]}>
             <Card color={brandColor} style={{ height: "100%", }}>
                 <Text style={[styles.subcontent, { textAlign: 'center' }]}>Create Plans</Text>
             </Card>
@@ -66,6 +65,7 @@ const styles = StyleSheet.create({
   },
   link: {
     height: 90,
+    marginTop:-30,
     paddingVertical: 20,
     paddingHorizontal: 15,
     width: "100%",

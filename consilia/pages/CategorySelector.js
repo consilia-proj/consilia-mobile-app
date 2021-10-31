@@ -18,11 +18,11 @@ export default function CategorySelector(props) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Event Category:</Text>
+      <Text style={styles.title}>Event Category</Text>
       {groupInfo.groupName && <Text style={styles.groupInfo}>{groupInfo.groupName}</Text>}
       {groupInfo.date && <Text style={styles.groupInfo}>{groupInfo.date.toString().split(" GMT")[0].slice(0, -3)}</Text>}
 
-      <ScrollView style={{flexGrow: 0, width: "100%", maxHeight: 400, marginBottom: 20}} contentContainerStyle={{alignItems: "center"}}>
+      <ScrollView style={{flexGrow: 0, width: "100%", maxHeight: 400, marginBottom: 20}} fadingEdgeLength={100} contentContainerStyle={{alignItems: "center"}}>
       {props.categories && props.categories.map((cat, i) => {
         let mod = i % 6
         let red = (mod <= 2 || mod == 5) ? 255 : 0
@@ -31,8 +31,8 @@ export default function CategorySelector(props) {
         let opacity = (category == cat) ? .7 : .2
         return (
           <EventType 
-            onPress={() => setCategory(cat)} 
-            color={`rgba(${red}, ${green}, ${blue}, ${opacity})`}
+            onPress={() => { setCategory(cat); makeGroup(); }} 
+            color={`rgba(${red}, ${green}, ${blue}, .4)`}
             text={cat}
             key={i}
             selected={(category == cat)}
@@ -40,9 +40,8 @@ export default function CategorySelector(props) {
         )
       })}
       </ScrollView>
-      <NextButton onPress={makeGroup} />
-      <TouchableOpacity style={{marginTop: 15}} onPress={props.goBack}>
-        <Text>Go back</Text>
+      <TouchableOpacity onPress={props.goBack}>
+        <Text style={{color: "black"}}>Go back</Text>
       </TouchableOpacity>
     </View>
   )
@@ -53,9 +52,14 @@ const styles = StyleSheet.create({
     height: '100%',
     alignItems: 'center',
     justifyContent: 'flex-start',
+    backgroundColor: "white"
   },
+groupInfo: {
+  color: "black"
+},
   title: {
     fontSize: 32,
+    color: "black",
     marginTop: 23,
     marginBottom: 35,
   },
