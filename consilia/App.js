@@ -3,13 +3,13 @@ import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, 
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import CategorySelector from './pages/CategorySelector';
 import HomePage from './pages/HomePage';
-
+import Welcome from './pages/Welcome';
+import NameInput from './pages/NameInput';
 import NewGroup from './pages/NewGroup';
 import Transport from './pages/Transport';
 import PlaceVotes from './pages/PlaceVotes'
 import FirstTime from './pages/FirstTime';
 import Results from './pages/Results';
-
 import { UserInfoContext } from './contexts/UserInfo';
 import { GroupInfoContext } from './contexts/GroupInfo'
 
@@ -21,13 +21,18 @@ export default function App() {
     setUserInfo({first: "Ben", last: "Gordon", pfp: null}) 
   }
   
-  const firstTime = <FirstTime 
+  const firstTime = <NameInput 
     userInfo={userInfo}
     onSubmit={(first, last) => {
       setUserInfo({first: first, last: last, pfp: null})
       setPage(home)
     }
   }/>
+
+  const welcome = <Welcome
+    nextPage={() => setPage(firstTime)}
+  />
+
   const home = <HomePage 
     userInfo={userInfo}
     createEvent={() => setPage(newGroup)} 
@@ -69,7 +74,7 @@ export default function App() {
   const results = <Results/>
 
   //const third = <EventPage link="consilia.io/ACL" title="Austin City Limits" distance="3 miles" rating="4"/>
-  const [page, setPage] = useState(firstTime);
+  const [page, setPage] = useState(welcome);
   const [userInfo, setUserInfo] = useState(/*{first: "Ben", last: "Gordon", pfp: null}*/null);
   const [groupInfo, setGroupInfo] = useState(null);
 
