@@ -13,28 +13,7 @@ const pholder = require('../assets/images/hacktx2021.png')
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREENWIDTH = Dimensions.get('window').width;
 const data = [
-    {
-        "placeID" : "1",
-        "eventID" : "ajdfln1-2341",
-        "rating" : 3.8,
-        "name" : "ACL",
-        "description" : "Music festival to get high at",
-        "longitiude" : -92.001,
-        "latitude" : 30.43,
-        "imageURL" : "https://edm.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cq_auto:good%2Cw_1200/MTczNjY4MTk3OTU2ODU1NzE3/austin-city-limits.jpg",
-        "googlePlaceId" : "lksdjfano32",
-    },
-    {
-        "placeID" : "2",
-        "eventID" : "sdfnmkglfer",
-        "rating" : 4.0,
-        "name" : "Fuddruckers",
-        "description" : "Burger place that fudds",
-        "longitiude" : -92.3201,
-        "latitude" : 30.42,
-        "imageURL" : "https://3e87eb59177583ca20e5-3c4f8e07d4ab2f5f48a61d1d9b0d1b8c.ssl.cf2.rackcdn.com/20161012095655-f59db4bc.jpg",
-        "googlePlaceId" : "lksdjfano32",
-    }
+
 ]
 
 const alreadyRemoved = []
@@ -183,8 +162,9 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   rating: {
-      fontSize:12,
-    backgroundColor: '#fff'
+      fontSize:16,
+    backgroundColor: '#fff',
+    marginBottom: 7
   },
   titleText: {
     fontSize: 30,
