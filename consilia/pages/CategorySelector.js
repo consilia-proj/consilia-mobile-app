@@ -1,19 +1,27 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import EventType from '../components/EventType';
 import NextButton from '../components/NextButton';
+import { GroupInfoContext } from '../contexts/GroupInfo';
 
 export default function CategorySelector(props) {
   const [category, setCategory] = useState("");
+  const groupInfo = useContext(GroupInfoContext)
 
+
+  function newGroupID() {
+    return Math.floor(1000 + Math.random()*1000)
+  }
   function makeGroup() {
-    props.onSubmit()
+    props.onSubmit(newGroupID())
   }
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Event Category:</Text>
-      {(props.groupName || props.date) && <Text style={styles.groupInfo}>{props.groupName} {props.date}</Text>}
+      {groupInfo.groupName && <Text style={styles.groupInfo}>{groupInfo.groupName}</Text>}
+      {groupInfo.date && <Text style={styles.groupInfo}>{groupInfo.date.toString().split(" GMT")[0].slice(0, -3)}</Text>}
+
       <ScrollView style={{flexGrow: 0, width: "100%", maxHeight: 400, marginBottom: 20}} contentContainerStyle={{alignItems: "center"}}>
       {props.categories && props.categories.map((cat, i) => {
         let mod = i % 6
@@ -49,6 +57,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     marginTop: 23,
-    marginBottom: 40,
+    marginBottom: 35,
   },
 })

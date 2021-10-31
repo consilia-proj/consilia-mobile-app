@@ -45,8 +45,8 @@ export default function App() {
   />
   const pickCategory = <CategorySelector 
     goBack={() => setPage(newGroup)} 
-    onSubmit={() => {
-      fetchNewUrl()
+    onSubmit={(newGroupID) => {
+      setGroupInfo({...groupInfo, id: newGroupID})
       setPage(pickTransport)
     }}
     categories={["Social", "Games", "Entertainment", "Dining", "Seasonal", "Outdoors"]}
