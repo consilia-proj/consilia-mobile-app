@@ -58,3 +58,13 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+
+./.[a-z]*
+index.js
+metro.config.js
+package-lock.json
+babel.config.js
+app.json
+__tests__/
+android/
+ios/
