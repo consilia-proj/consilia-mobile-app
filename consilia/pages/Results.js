@@ -28,7 +28,7 @@ export default function Results(props) {
     
     <ScrollView style={{width: "100%"}}>
       {placez.map((item, index) => {return(
-        <Card color="#eee" style={{width: "92%"}}>
+        <Card key={index} color="#eee" style={{width: "92%"}}>
           <Text style={{color: "black", fontWeight: "bold"}}>{item.name}</Text>
           <Text style={{color: "black"}}>Votes: {item.points}</Text>
           {item.rating != -1 && <Text style={{color: "black"}}>Rating: {item.rating}/5</Text>}
