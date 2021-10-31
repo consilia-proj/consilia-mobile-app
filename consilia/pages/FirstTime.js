@@ -1,7 +1,7 @@
 import React, {useState, useContext} from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, Image } from 'react-native';
 import ProfileCorner from '../components/ProfileCorner';
-import { UserInfoContext } from '../UserInfo';
+import { UserInfoContext } from '../contexts/UserInfo';
 
 export default function FirstTime(props) {
   const userInfo = useContext(UserInfoContext)

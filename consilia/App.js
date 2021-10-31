@@ -10,7 +10,8 @@ import PlaceVotes from './pages/PlaceVotes'
 import FirstTime from './pages/FirstTime';
 import Results from './pages/Results';
 
-import { UserInfoContext } from './UserInfo';
+import { UserInfoContext } from './contexts/UserInfo';
+import { GroupInfoContext } from './contexts/GroupInfo'
 
 export default function App() {
   function fetchNewUrl() {
@@ -36,7 +37,11 @@ export default function App() {
 
   const newGroup = <NewGroup 
     goHome={() => setPage(home)} 
-    onNext={() => setPage(pickCategory)}
+    onNext={(groupName, date) => {
+      setGroupInfo({groupName: groupName, date: date})
+      //console.log(groupInfo)
+      setPage(pickCategory)
+    }}
   />
   const pickCategory = <CategorySelector 
     goBack={() => setPage(newGroup)} 
@@ -44,7 +49,7 @@ export default function App() {
       fetchNewUrl()
       setPage(pickTransport)
     }}
-    categories={["Social", "Games", "Seasonal"]}
+    categories={["Social", "Games", "Entertainment", "Dining", "Seasonal", "Outdoors"]}
   />
 
   const pickTransport = <Transport 
@@ -60,7 +65,8 @@ export default function App() {
   //const third = <EventPage link="consilia.io/ACL" title="Austin City Limits" distance="3 miles" rating="4"/>
   const [page, setPage] = useState(firstTime);
   const [userInfo, setUserInfo] = useState(/*{first: "Ben", last: "Gordon", pfp: null}*/null);
-  
+  const [groupInfo, setGroupInfo] = useState(null);
+
   useEffect(() => {
     userInfo && userInfo.first && userInfo.last && setPage(home);
   }, [])
@@ -69,7 +75,9 @@ export default function App() {
     <SafeAreaView style={{flex: 1}}>
       <StatusBar/>
       <UserInfoContext.Provider value={userInfo}>
-        {page}
+        <GroupInfoContext.Provider value={groupInfo}>
+          {page}
+        </GroupInfoContext.Provider>
       </UserInfoContext.Provider>
     </SafeAreaView>
   );

@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, Touchable } from 'react-native';
 import ProfileCorner from '../components/ProfileCorner';
-import { UserInfoContext } from '../UserInfo';
+import { UserInfoContext } from '../contexts/UserInfo';
 
 export default function HomePage(props) {
   const userInfo = useContext(UserInfoContext)

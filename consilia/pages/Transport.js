@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList } from 'react-native';
+import NextButton from '../components/NextButton';
 import TransportMode from '../components/TransportMode';
 
 export default function Transport(props) {
@@ -11,10 +12,8 @@ export default function Transport(props) {
           <TransportMode text={vehicle} key={i}></TransportMode>
         ))}
       </ScrollView> 
-      <TouchableOpacity style={styles.next} onPress={props.onSubmit}>
-        <Text style={{fontSize: 18}}>Next</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={props.goHome}>
+      <NextButton onPress={props.onSubmit}/>
+      <TouchableOpacity style={{marginTop: 30}} onPress={props.goHome}>
         <Text>Return Home</Text>
       </TouchableOpacity>  
     </View>
