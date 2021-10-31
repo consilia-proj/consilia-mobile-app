@@ -1,3 +1,4 @@
+
 import React, {useState, useMemo} from 'react';
 import styled from 'styled-components'
 import {Button, View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList, TextInput, Image, Dimensions } from 'react-native';
@@ -5,7 +6,9 @@ import EventType from '../components/EventType';
 import TransportMode from '../components/TransportMode';
 import PlaceData from '../components/PlaceData';
 import { tsConstructorType } from '@babel/types';
-import TinderCard from 'react-tinder-card'
+import TinderCard from 'react-tinder-card';
+import { GroupInfoContext } from '../contexts/GroupInfo';
+
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREENWIDTH = Dimensions.get('window').width;
@@ -37,19 +40,25 @@ const data = [
 const alreadyRemoved = []
 let placesState = data
 
+function greatCircleDist(a, b) { // distance (in mi) on Earth's surface as the crow flies.
+  // r*arccos(sin φ1 sin φ2 cos(θ1-θ2) + cos φ1 cos φ2).
+  return 3959*Math.acos(Math.sin((90 - a[0])*Math.PI/180)*Math.sin((90 - b[0])*Math.PI/180) * Math.cos((a[1] - b[1])*Math.PI/180) + Math.cos((90 - a[0])*Math.PI/180)*Math.cos((90 - b[0])*Math.PI/180))
+}
+
+export default function PlaceVotes(props) {
+  const groupInfo = useContext(GroupInfoContext)
+  const [places, setPlaces] = useState(null);
 
 
-function PlaceVotes(props) {
-    const [places, setPlaces] = useState(data)
-    const [lastDirection, setLastDirection] = useState()
+  useEffect(() => {
+    fetch(`http://35.239.35.148/Event/${groupInfo.eventID}/votes`)
+      .then(response => response.json())
+      .then(data => {
+        setPlaces(data);
+      })
+  }, [])
 
-    const childRefs = useMemo(() => Array(data.length).fill(0).map(i => React.createRef()), [])
-
-    const swiped = (direction, nameToDelete) => {
-        console.log('removing: ' + nameToDelete + ' to the ' + direction)
-        setLastDirection(direction)
-        alreadyRemoved.push(nameToDelete)
-    }
+  return (
 
     
 

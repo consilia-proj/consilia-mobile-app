@@ -1,22 +1,29 @@
 import React from 'react';
+import Card from '../components/card';
+import { brandColor } from '../constants/colors';
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 export default function NextButton(props) {
   return (
-    <TouchableOpacity style={styles.next} onPress={props.onPress}>
-      <Text style={{fontSize: 18}}>Next</Text>
+    <TouchableOpacity onPress={props.onPress} disabled={props.disabled} style={styles.link}>
+            <Card color={props.disabled ? "#aaaaaa" : brandColor} style={{ height: "100%", }}>
+                <Text style={[styles.subcontent, { textAlign: 'center' }]}>Continue</Text>
+            </Card>
     </TouchableOpacity>
   )
 }
 
 const styles = StyleSheet.create({
-  next: {
-    width: "55%",
-    height: 60,
-    backgroundColor: "rgba(0, 50, 255, .4)",
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 1,
-    borderColor: "#000",
-  }
+  link: {
+    height: 90,
+    paddingVertical: 20,
+    paddingHorizontal: 15,
+    width: "100%",
+  },
+
+  subcontent: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white'
+  },
 })

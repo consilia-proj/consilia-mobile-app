@@ -12,23 +12,28 @@ export default function FirstTime(props) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Consilia</Text>
+      <Text style={{color: "black"}}>Let us know so everyone knows what to call you.</Text>
       <TextInput 
         style={styles.nameInput}
         onChangeText={text => setFirst(text)}
         value={first}
       />
-      <Text style={styles.nameTxt}>First</Text>
+      <Text style={styles.nameTxt}>First name (required)</Text>
       <TextInput 
         style={styles.nameInput}
         onChangeText={text => setLast(text)}
         value={last}
       />
-      <Text style={styles.nameTxt}>Last</Text>
+      <Text style={styles.nameTxt}>Last name (optional)</Text>
       <TouchableOpacity styles={styles.pfpButton}>
         <Image style={styles.pfp} source={require("../assets/images/placeholder.jpg")}></Image>
       </TouchableOpacity>
       <Text style={styles.nameTxt}>Profile Picture (optional)</Text>
-      <TouchableOpacity onPress={() => props.onSubmit(first, last)} style={styles.continueButton}>
+      <TouchableOpacity 
+        onPress={() => props.onSubmit(first, last)} 
+        style={styles.continueButton}
+        disabled={first.trim().length > 0 ? false : true}
+      >
         <Text style={{fontSize: 15}}>Continue</Text>
       </TouchableOpacity>
     </View>

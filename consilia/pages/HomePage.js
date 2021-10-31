@@ -1,34 +1,50 @@
 import React, {useState, useEffect, useContext} from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, TextInput, Touchable } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, TextInput, Touchable, ImageBackground } from 'react-native';
+import { RFValue } from 'react-native-responsive-fontsize';
 import ProfileCorner from '../components/ProfileCorner';
-import { UserInfoContext } from '../contexts/UserInfo';
 
+import Card from '../components/card'
+import { brandColor, brandSubColor } from '../constants/colors'
+import mapImg from '../constants/mapfad.png';
+
+import { UserInfoContext } from '../contexts/UserInfo';
 export default function HomePage(props) {
   const userInfo = useContext(UserInfoContext)
-  
-  /*seEffect(() => {
-    setUserInfo(props.userInfo)
-    //console.log("HomePage props " + props.userInfo)
-    //console.log("HomePage " + userInfo)
-    //console.log(userInfo)
-  }, [props.userInfo])*/
+
+  const [showInput, setShowInput] = useState(false)
+  const [IDInput, setIDInput] = useState("")
   
   return (
     <View style={styles.container}>
-      <ProfileCorner 
-        context={props.context}
-        userInfo={userInfo}
-        src={props.src}
-        onPress={props.editProfile}
-      />
-      <Text style={styles.title} onPress={props.touchTitle}>Consilia</Text>
-      <TouchableOpacity style={styles.createEvent} onPress={props.createEvent}>
-        <Text style={{fontSize: 18}}>Create Event</Text>
+      <Text style={[styles.title, {width: "80%"}]}  onPress={props.touchTitle}>Welcome, {userInfo.first}</Text>
+      <Text style={[styles.subtitle, {width: "80%"}]} onPress={props.touchTitle}>Austin, Texas</Text>
+      <Image style={{height: "100%", zIndex: -2, position: "absolute"}} resizeMode="contain" resizeMethod="scale" source={mapImg}/>
+
+      
+      <TouchableOpacity onPress={props.createEvent} style={[styles.link, {marginTop: 350}]}>
+        <Card color={brandColor} style={{ height: "100%", }}>
+            <Text style={[styles.subcontent, { textAlign: 'center' }]}>Create Plans</Text>
+        </Card>
       </TouchableOpacity>
-      <View style={styles.linkBox}>
-        <TextInput style={styles.linkInput}></TextInput>
-        <TouchableOpacity onPress={props.goToLink}><Text>Go to link</Text></TouchableOpacity>
-      </View>
+
+      <TouchableOpacity onPress={() => setShowInput(!showInput)} style={{width: "92%", height: 50, marginBottom: 20}}>
+        <Card color={brandSubColor} style={{ height: "100%", }}>
+            <Text style={[styles.subcontent, { textAlign: 'center' }]}>Vote on Plans</Text>
+        </Card>
+      </TouchableOpacity>
+
+      {showInput && 
+        <View style={styles.IDBox}> 
+          <TextInput style={styles.IDInput} value={IDInput} onChangeText={text => setIDInput(text)}/>
+          <TouchableOpacity onPress={() => props.getEventById(IDInput)} style={[styles.linkBox, {marginTop: -5}]}>
+            <Card color={brandSubColor} style={{ height: "100%", width: "60%"}}>
+              <Text style={[styles.subcontent, { textAlign: 'center' }]}>Go!</Text>
+            </Card>
+          </TouchableOpacity>
+        </View>
+      }
+
+
     </View>
   )
 }
@@ -38,6 +54,7 @@ const styles = StyleSheet.create({
     height: '100%',
     alignItems: 'center',
     justifyContent: 'flex-start',
+    backgroundColor: 'white'
   },
   createEvent: {
     width: "60%",
@@ -49,18 +66,24 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "black",
   },
-  linkInput: {
-    width: "60%",
-    marginRight: 10,
-    height: 30,
-    borderWidth: 1,
-    borderColor: "black",
-    paddingHorizontal: 2,
-  }, 
+  link: {
+    height: 90,
+    paddingVertical: 20,
+    paddingHorizontal: 15,
+    width: "100%",
+  },
+  subtitle: {
+    fontSize: RFValue(18),
+    textAlign: "left",
+    color: "black",
+    fontWeight: "300"
+  },
   title: {
-    fontSize: 36,
+    fontSize: RFValue(24),
+    fontWeight: "bold",
     marginTop: 15,
-    marginBottom: 48,
+    color: "black",
+    textAlign: "left"
   },
   linkBox: {
     width: "95%",
@@ -68,5 +91,23 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: "center",
     alignContent: "center"
-  }
+  },
+  subcontent: {
+    fontSize: 20,
+    color: 'white'
+  },
+  IDBox: {
+    width: "100%", 
+    alignItems: "center",
+    marginTop: 20,
+  },
+  IDInput: {
+    width: "70%",
+    backgroundColor: "white",
+    height: 40,
+    borderWidth: 1,
+    paddingHorizontal: 2
+  },
+ 
+  
 })
