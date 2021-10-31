@@ -1,6 +1,6 @@
 import React, {useState, useMemo, useEffect, useContext} from 'react';
 import styled from 'styled-components'
-import {Button, View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList, TextInput, Image, Dimensions } from 'react-native';
+import {Button, View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList, TextInput, Image, Dimensions, Share } from 'react-native';
 import EventType from '../components/EventType';
 import TransportMode from '../components/TransportMode';
 import PlaceData from '../components/PlaceData';
@@ -37,6 +37,9 @@ function PlaceVotes(props) {
           console.log("newData.length:" + newData.length)
           setPlaces(newData);
         }).then(console.log("places.length:" + places.length))
+        .then(Share.share({
+          message: groupInfo.eventID
+        }))
     }, [])
 
     const swiped = (direction, nameToDelete) => {
@@ -80,7 +83,7 @@ function PlaceVotes(props) {
             childRefs[index].current.swipe(dir) // Swipe the card!
         }
     }*/
-  
+
     return (
     <View style={styles.container}>
       <TouchableOpacity onPress={props.goHome}>

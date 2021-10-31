@@ -106,7 +106,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     height: 40,
     borderWidth: 1,
-    paddingHorizontal: 2
+    paddingHorizontal: 2,
+    marginTop: -400,
   },
  
   

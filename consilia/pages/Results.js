@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList, TextInput, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList, TextInput, Image} from 'react-native';
 import EventType from '../components/EventType';
 import TransportMode from '../components/TransportMode';
 import { RFValue } from 'react-native-responsive-fontsize';
@@ -30,6 +30,7 @@ function load()
   return (
     <View style={styles.container}>
       <Text style={[styles.title, { textAlign: 'center', marginTop: RFValue(50) }]}>Current Results</Text>
+      <TextInput style={{backgroundColor: "white", borderWidth: 1, marginVertical: 2}} value={groupInfo.eventID}/>
 
     <ScrollView style={{width: "100%"}} fadingEdgeLength={100}>
       {placez.map((item, index) => {return(
