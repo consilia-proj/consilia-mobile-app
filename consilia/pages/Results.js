@@ -31,7 +31,7 @@ function load()
     <View style={styles.container}>
       <Text style={[styles.title, { textAlign: 'center', marginTop: RFValue(50) }]}>Current Results</Text>
 
-    <ScrollView style={{width: "100%"}}>
+    <ScrollView style={{width: "100%"}} fadingEdgeLength={100}>
       {placez.map((item, index) => {return(
         <Card key={index} color="#eee" style={{width: "92%"}}>
           <Text style={{color: "black", fontWeight: "bold"}}>{item.name}</Text>
@@ -40,7 +40,7 @@ function load()
         </Card>
       )})}
       </ScrollView>
-      <TouchableOpacity style={styles.goHome} onPress={(e) => {load();}}>
+      <TouchableOpacity style={{margin: 5}} onPress={(e) => {load();}}>
         <Text>Reload</Text>
       </TouchableOpacity>  
     </View>
