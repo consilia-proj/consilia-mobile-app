@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, {useState, useMemo} from 'react';
 import styled from 'styled-components'
-import { Animated, PanResponder, View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList, TextInput, Image, Dimensions } from 'react-native';
+import {Button, View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList, TextInput, Image, Dimensions } from 'react-native';
 import EventType from '../components/EventType';
 import TransportMode from '../components/TransportMode';
 import PlaceData from '../components/PlaceData';
@@ -35,35 +35,39 @@ const data = [
 ]
 
 const alreadyRemoved = []
+let placesState = data
+
+
 
 function PlaceVotes(props) {
+    const [places, setPlaces] = useState(data)
     const [lastDirection, setLastDirection] = useState()
 
+    const childRefs = useMemo(() => Array(data.length).fill(0).map(i => React.createRef()), [])
+
     const swiped = (direction, nameToDelete) => {
-        console.log('removing: ' + nameToDelete)
+        console.log('removing: ' + nameToDelete + ' to the ' + direction)
         setLastDirection(direction)
+        alreadyRemoved.push(nameToDelete)
     }
 
-    const outOfFrame = (Name) => {
-        console.log(Name + ' left the screen!')
+    
+
+    const outOfFrame = (PlaceID) => {
+        console.log(PlaceID + ' left the screen!')
+        placesState = placesState.filter(place => place.PlaceID !== PlaceID)
+        setPlaces(placesState)
     }
 
-    // var renderPlaces = () =>{
-    //     return data.map((item,i) =>{
-    //         return(
-                
-      
-                // <Animated.View 
-                // key={item.PlaceID} style={styles.animated}>
-                //     <Text style={styles.titleText}>{item.Name}</Text>
-                //     <Text style={styles.desc}>{item.Description}</Text>
-                //     <Image style={styles.img} 
-                //     source={{uri: item.ImageURL}}></Image>
-                //     <Text>{item.Rating} stars</Text>
-                // </Animated.View>
-    //         )
-    //     })
-    // }
+    const swipe = (dir) => {
+        const cardsLeft = places.filter(place => !alreadyRemoved.includes(place.PlaceID))
+        if (cardsLeft.length) {
+            const toBeRemoved = cardsLeft[cardsLeft.length - 1].PlaceID // Find the card object to be removed
+            const index = data.map(Place => Place.PlaceID).indexOf(toBeRemoved) // Find the index of which to make the reference to
+            alreadyRemoved.push(toBeRemoved) // Make sure the next card gets removed next time if this card do not have time to exit the screen
+            childRefs[index].current.swipe(dir) // Swipe the card!
+        }
+    }
   
     return (
     <View style={styles.container}>
@@ -72,20 +76,29 @@ function PlaceVotes(props) {
       </TouchableOpacity> 
       
       <CardContainer>
-        {data.map((item, i) =>
-          <TinderCard key={item.Name} onSwipe={(dir) => swiped(dir, item.Name)} onCardLeftScreen={() => outOfFrame(item.Name)}>
+        {data.map((item, index) =>
+          <TinderCard ref={childRefs[index]} key={item.PlaceID} onSwipe={(dir) => swiped(dir, item.PlaceID)} onCardLeftScreen={() => outOfFrame(item.PlaceID)}>
             <Card>
                 <Text style={styles.titleText}>{item.Name}</Text>
                 <Text style={styles.desc}>{item.Description}</Text>
+                <Text style={styles.rating}>{item.Rating} stars</Text>
                 <Image style={styles.img} 
                 source={{uri: item.ImageURL}}></Image>
-                <Text style={styles.rating}>{item.Rating} stars</Text>
+                <View style={{flexDirection:"row"}}>
+                <View style={{flex:1}}>
+                    <Text style={{justifyContent: 'flex-start', fontSize: 12}}>Dislike</Text>
+                </View>
+                <View style={{flex:1}}>
+                    <Text style={{justifyContent: 'flex-end', textAlign: 'right', fontSize:12}}>Like</Text>
+                </View>
+        </View>
             </Card>
           </TinderCard>
         ).reverse()}
+        
       </CardContainer>
-      
-      {lastDirection ? <InfoText>You swiped {lastDirection}</InfoText> : <InfoText />}
+        
+      {/* {lastDirection ? <InfoText>You swiped {lastDirection}</InfoText> : <InfoText />} */}
     
     </View>
   )
@@ -141,14 +154,16 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   rating: {
+      fontSize:12,
     backgroundColor: '#fff'
   },
   titleText: {
     fontSize: 30,
-    marginBottom: 10,
+    marginBottom: 5,
   },
   desc: {
-      fontSize: 16
+      fontSize: 12
+      
   },
 
 })
@@ -159,7 +174,7 @@ const CardContainer = styled.View`
     width: 95%;
     max-width: 400px;
     text-align: center;
-    height: 100%;
+    height: 80%;
     padding: 20px;
 `
 
@@ -168,7 +183,7 @@ const Card = styled.View`
     background-color: #fff;
     width: 100%;
     max-width: 260px;
-    height: 600;
+    height: 600px;
     shadow-color: black;
     shadow-opacity: 0.2;
     shadow-radius: 20px;
@@ -181,5 +196,10 @@ const Card = styled.View`
 const InfoText = styled.Text`
     height: 28px;
     justify-content: center;
+    bottom:0;
     display: flex;
+`
+const Buttons = styled.View`
+    margin: 20px;
+    z-index: -100;
 `
