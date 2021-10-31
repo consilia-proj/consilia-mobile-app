@@ -68,7 +68,7 @@ export default function App() {
       setGroupInfo(newGroupInfo)
       setPage(pickTransport)
     }}
-    categories={["Social", "Games", "Entertainment", "Dining", "Seasonal", "Outdoors"]}
+    categories={["Social", "Games", "Entertainment", "Dining", "Seasonal"]}
   />
 
   const pickTransport = <Transport 
