@@ -9,18 +9,27 @@ export default function CategorySelector(props) {
   const groupInfo = useContext(GroupInfoContext)
 
 
-  function newGroupID() {
-    return Math.floor(1000 + Math.random()*1000)
-  }
   function makeGroup() {
-    props.onSubmit(newGroupID())
+    console.log(category)
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...groupInfo,
+        startDate: groupInfo.startDate.toISOString().slice(0, -5),
+        type: category
+      })
+    };
+    fetch('http://35.239.35.148/Event/', requestOptions)
+      .then(response => response.json())
+      .then(data => {console.log(data); props.onSubmit(data)});
   }
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Event Category</Text>
-      {groupInfo.groupName && <Text style={styles.groupInfo}>{groupInfo.groupName}</Text>}
-      {groupInfo.date && <Text style={styles.groupInfo}>{groupInfo.date.toString().split(" GMT")[0].slice(0, -3)}</Text>}
+      {groupInfo.name && <Text style={styles.groupInfo}>{groupInfo.name}</Text>}
+      {groupInfo.startDate && <Text style={styles.groupInfo}>{groupInfo.startDate.toString().split(" GMT")[0].slice(0, -3)}</Text>}
 
       <ScrollView style={{flexGrow: 0, width: "100%", maxHeight: 400, marginBottom: 20}} fadingEdgeLength={100} contentContainerStyle={{alignItems: "center"}}>
       {props.categories && props.categories.map((cat, i) => {
@@ -31,7 +40,7 @@ export default function CategorySelector(props) {
         let opacity = (category == cat) ? .7 : .2
         return (
           <EventType 
-            onPress={() => { setCategory(cat); makeGroup(); }} 
+            onPress={() => {setCategory(cat)}} 
             color={`rgba(${red}, ${green}, ${blue}, .4)`}
             text={cat}
             key={i}
@@ -40,8 +49,9 @@ export default function CategorySelector(props) {
         )
       })}
       </ScrollView>
+      <NextButton onPress={() => makeGroup()}></NextButton>
       <TouchableOpacity onPress={props.goBack}>
-        <Text style={{color: "black"}}>Go back</Text>
+        <Text style={{color: "black", marginTop: 20}}>Go back</Text>
       </TouchableOpacity>
     </View>
   )

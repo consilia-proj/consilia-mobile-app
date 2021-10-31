@@ -145,7 +145,6 @@
 				DBFAC953825D8046FC2D31BA /* Pods-consilia-consiliaTests.debug.xcconfig */,
 				228261592FB5B854B7625AA0 /* Pods-consilia-consiliaTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};

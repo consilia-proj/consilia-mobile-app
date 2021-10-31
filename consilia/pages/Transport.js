@@ -17,11 +17,11 @@ export default function Transport(props) {
     <View style={styles.container}>
       <Text style={{fontSize: RFValue(25), color: "black", marginTop: RFValue(50)}}>How Can You Get There?</Text>
       <Text style={{fontSize: RFValue(10), color: "black"}}>We need this so we know how far you can travel to a place.</Text>
-      <Text>Group ID: {groupInfo && groupInfo.id ? groupInfo.id : "null"}</Text>
+      <Text>Group ID: {groupInfo && groupInfo.eventID ? groupInfo.eventID : "null"}</Text>
       <ScrollView style={styles.options} contentContainerStyle={styles.optionsCont}>
         {["Car", "Bus", "Uber"].map((vehicle, i) => (
 
-           <Card color={"white"} style={{ width: "90%",maxHeight: RFValue(175), borderColor: (i == transportIndex) ? brandColor : "black", borderWidth:  1}}>
+           <Card key={i} color={"white"} style={{ width: "90%",maxHeight: RFValue(175), borderColor: (i == transportIndex) ? brandColor : "black", borderWidth:  1}}>
            <TouchableOpacity onPress={() => { setTrans(i) }} ><View>
              <View style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: 'transparent' }}>
                <View>

@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext, createContext} from 'react';
-import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, View } from 'react-native';
+import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, View, Platform } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import CategorySelector from './pages/CategorySelector';
 import HomePage from './pages/HomePage';
@@ -12,15 +12,24 @@ import FirstTime from './pages/FirstTime';
 import Results from './pages/Results';
 import { UserInfoContext } from './contexts/UserInfo';
 import { GroupInfoContext } from './contexts/GroupInfo'
+import Geolocation from 'react-native-geolocation-service';
 
 export default function App() {
-  function fetchNewUrl() {
+  function getEventById(id) {
+    console.log(id);
+    fetch(`http://35.239.35.148/Event/${id}`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        setGroupInfo(data), setPage(pickTransport)
+      });
   }
 
   function fetchUserInfo() {
     setUserInfo({first: "Ben", last: "Gordon", pfp: null}) 
   }
   
+
   const firstTime = <NameInput 
     userInfo={userInfo}
     onSubmit={(first, last) => {
@@ -36,22 +45,25 @@ export default function App() {
   const home = <HomePage 
     userInfo={userInfo}
     createEvent={() => setPage(newGroup)} 
-    goToLink={() => setPage(pickTransport)}
+    getEventById={(id) => getEventById(id)}
     editProfile={() => setPage(firstTime)}
   />
 
   const newGroup = <NewGroup 
     goHome={() => setPage(home)} 
-    onNext={(groupName, date) => {
-      setGroupInfo({groupName: groupName, date: date})
+    onNext={(name, startDate) => {
+      //console.log("newGroup onNext")
+      //console.log(groupInfo)
+      setGroupInfo({...groupInfo, ...location, name: name, startDate: startDate, range: 500})
+      console.log(location)
       //console.log(groupInfo)
       setPage(pickCategory)
     }}
   />
   const pickCategory = <CategorySelector 
     goBack={() => setPage(newGroup)} 
-    onSubmit={(newGroupID) => {
-      setGroupInfo({...groupInfo, id: newGroupID})
+    onSubmit={(newGroupInfo) => {
+      setGroupInfo(newGroupInfo)
       setPage(pickTransport)
     }}
     categories={["Social", "Games", "Entertainment", "Dining", "Seasonal", "Outdoors"]}
@@ -61,13 +73,13 @@ export default function App() {
     onSubmit={() => setPage(voteOnPlaces)}
     goHome={() => {
       setPage(home)
-      setGroupInfo(null)
+      setGroupInfo({...location})
     }}
   />
   const voteOnPlaces = <PlaceVotes
     goHome={() => {
       setPage(home)
-      setGroupInfo(null)
+      setGroupInfo({...location})
     }}
   />
 
@@ -77,8 +89,23 @@ export default function App() {
   const [page, setPage] = useState(welcome);
   const [userInfo, setUserInfo] = useState(/*{first: "Ben", last: "Gordon", pfp: null}*/null);
   const [groupInfo, setGroupInfo] = useState(null);
+  const [location, setLocation] = useState({locationLat: 30.286274, locationLong: -97.738035});
+
+
+  const getLocation = /*async*/ () => {
+    //const hasPermission = await hasLocationPermission();
+
+    //if (/*!hasPermission*/true) {
+      return {locationLat: 30.286274, locationLong: -97.738035};
+    //}
+
+  
+  };
+
 
   useEffect(() => {
+    setLocation(getLocation())
+    setGroupInfo({...groupInfo, ...location})
     userInfo && userInfo.first && userInfo.last && setPage(home);
   }, [])
 

@@ -9,8 +9,8 @@ import { GroupInfoContext } from '../contexts/GroupInfo';
 export default function NewGroup(props) {
   const userInfo = useContext(UserInfoContext)
   const groupInfo = useContext(GroupInfoContext)
-  const [groupName, setGroupName] = useState(groupInfo && groupInfo.groupName ? groupInfo.groupName : "")
-  const [date, setDate] = useState(groupInfo && groupInfo.date ? groupInfo.date : new Date())
+  const [groupName, setGroupName] = useState(groupInfo && groupInfo.name ? groupInfo.name : "")
+  const [date, setDate] = useState(groupInfo && groupInfo.startDate ? groupInfo.startDate : new Date())
 
   return (
     <View style={styles.container}>

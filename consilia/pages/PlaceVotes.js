@@ -1,12 +1,13 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList, TextInput, Image } from 'react-native';
-import EventType from '../components/EventType';
-import TransportMode from '../components/TransportMode';
+import { GroupInfoContext } from '../contexts/GroupInfo';
+
 
 export default function PlaceVotes(props) {
+  const groupInfo = useContext(GroupInfoContext)
   return (
     <View style={styles.container}>
-      <TextInput style={styles.linkStyle}>{props.link}</TextInput>
+      <TextInput style={styles.linkStyle} value={groupInfo && groupInfo.eventID ? groupInfo.eventID : ""}>{props.link}</TextInput>
       <Text style={styles.titleText}>{props.title}</Text>
       <Image style={styles.img} source={
         {uri: "https://edm.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cq_auto:good%2Cw_1200/MTczNjY4MTk3OTU2ODU1NzE3/austin-city-limits.jpg"}

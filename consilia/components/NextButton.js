@@ -9,7 +9,7 @@ export default function NextButton(props) {
             <Card color={props.disabled ? "#aaaaaa" : brandColor} style={{ height: "100%", }}>
                 <Text style={[styles.subcontent, { textAlign: 'center' }]}>Continue</Text>
             </Card>
-            </TouchableOpacity>
+    </TouchableOpacity>
   )
 }
 

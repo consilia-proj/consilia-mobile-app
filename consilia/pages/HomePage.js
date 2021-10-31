@@ -10,38 +10,41 @@ import mapImg from '../constants/mapfad.png';
 import { UserInfoContext } from '../contexts/UserInfo';
 export default function HomePage(props) {
   const userInfo = useContext(UserInfoContext)
-  
- 
 
-
-
-  /*seEffect(() => {
-    setUserInfo(props.userInfo)
-    //console.log("HomePage props " + props.userInfo)
-    //console.log("HomePage " + userInfo)
-    //console.log(userInfo)
-  }, [props.userInfo])*/
+  const [showInput, setShowInput] = useState(false)
+  const [IDInput, setIDInput] = useState("")
   
   return (
     <View style={styles.container}>
       <Text style={[styles.title, {width: "80%"}]}  onPress={props.touchTitle}>Welcome, {userInfo.first}</Text>
       <Text style={[styles.subtitle, {width: "80%"}]} onPress={props.touchTitle}>Austin, Texas</Text>
-  <Image style={{height: "100%", zIndex: -2, position: "absolute"}} resizeMode="contain" resizeMethod="scale" source={mapImg}/>
+      <Image style={{height: "100%", zIndex: -2, position: "absolute"}} resizeMode="contain" resizeMethod="scale" source={mapImg}/>
 
-    <View style={{height: 350}}>
-
-      </View>
-      <TouchableOpacity onPress={props.createEvent} style={[styles.link, {marginTop:20}]}>
-            <Card color={brandColor} style={{ height: "100%", }}>
-                <Text style={[styles.subcontent, { textAlign: 'center' }]}>Create Plans</Text>
-            </Card>
+      
+      <TouchableOpacity onPress={props.createEvent} style={[styles.link, {marginTop: 350}]}>
+        <Card color={brandColor} style={{ height: "100%", }}>
+            <Text style={[styles.subcontent, { textAlign: 'center' }]}>Create Plans</Text>
+        </Card>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={props.createEvent} style={styles.link}>
-            <Card color={brandSubColor} style={{ height: "100%", }}>
-                <Text style={[styles.subcontent, { textAlign: 'center' }]}>Vote on Plans</Text>
-            </Card>
+      <TouchableOpacity onPress={() => setShowInput(!showInput)} style={{width: "92%", height: 50, marginBottom: 20}}>
+        <Card color={brandSubColor} style={{ height: "100%", }}>
+            <Text style={[styles.subcontent, { textAlign: 'center' }]}>Vote on Plans</Text>
+        </Card>
       </TouchableOpacity>
+
+      {showInput && 
+        <View style={styles.IDBox}> 
+          <TextInput style={styles.IDInput} value={IDInput} onChangeText={text => setIDInput(text)}/>
+          <TouchableOpacity onPress={() => props.getEventById(IDInput)} style={[styles.linkBox, {marginTop: -5}]}>
+            <Card color={brandSubColor} style={{ height: "100%", width: "60%"}}>
+              <Text style={[styles.subcontent, { textAlign: 'center' }]}>Go!</Text>
+            </Card>
+          </TouchableOpacity>
+        </View>
+      }
+
+
     </View>
   )
 }
@@ -65,7 +68,6 @@ const styles = StyleSheet.create({
   },
   link: {
     height: 90,
-    marginTop:-30,
     paddingVertical: 20,
     paddingHorizontal: 15,
     width: "100%",
@@ -94,4 +96,18 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: 'white'
   },
+  IDBox: {
+    width: "100%", 
+    alignItems: "center",
+    marginTop: 20,
+  },
+  IDInput: {
+    width: "70%",
+    backgroundColor: "white",
+    height: 40,
+    borderWidth: 1,
+    paddingHorizontal: 2
+  },
+ 
+  
 })
